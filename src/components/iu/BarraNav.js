@@ -35,12 +35,7 @@ export default function BarraNav() {
                 >
                    Inventario
                 </NavLink>
-                <NavLink 
-                    className="nav-item nav-link"
-                    to='/agregarinventario'
-                >
-                   Agregar Inventario
-                </NavLink>
+                
             </ul>
             </div>
         </div>

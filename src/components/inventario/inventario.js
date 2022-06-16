@@ -1,22 +1,23 @@
 import React, { useEffect, useState } from 'react'
+import { NavLink } from 'react-router-dom'
 import { obtenerInventario, guardarInventario, editaInventarioPorId } from '../../services/EstadoService';
 import TablaInventario from '../iu/TablaInventario';
 import ModalDos from './Modal';
 
 export default function TipoEquipo() {
-  
+
   const [estados, setEstados] = useState([]);
   const [estado, setEstado] = useState({
     _id: '',
     usaurios: '',
-    email:'',
+    email: '',
     estado: true
   });
   const [error, setError] = useState(false);
   const [hidden] = useState('hidden');
   const [loading, setLoading] = useState(false);
 
-  useEffect( () => {
+  useEffect(() => {
     getEstados();
   }, []);
 
@@ -24,24 +25,24 @@ export default function TipoEquipo() {
     e.preventDefault();
     setEstado({
       ...estado,
-      [e.target.name]: e.target.value 
+      [e.target.name]: e.target.value
     })
   }
   const getEstados = () => {
     obtenerInventario()
-    .then(r => {
-      console.log(r.data)
+      .then(r => {
+        console.log(r.data)
         setEstados(r.data)
-    }).catch(e => {
+      }).catch(e => {
         console.log(e)
-    })
-}
+      })
+  }
   const add = e => {
     setLoading(true);
     e.preventDefault();
-    if(estado._id){
+    if (estado._id) {
       editarEstado();
-    }else{
+    } else {
       guardarEstado();
     }
     resetEstado();
@@ -49,15 +50,15 @@ export default function TipoEquipo() {
 
   const guardarEstado = () => {
     guardarInventario(estado)
-    .then(r => {
-      setEstados([...estados, r.data.dato]);
-      changeError(false)
-      setLoading(false);
-    }).catch(e => {
-      console.log(e);
-      changeError(true);
-      setLoading(false);
-    })
+      .then(r => {
+        setEstados([...estados, r.data.dato]);
+        changeError(false)
+        setLoading(false);
+      }).catch(e => {
+        console.log(e);
+        changeError(true);
+        setLoading(false);
+      })
   }
 
   const closeModal = () => {
@@ -74,13 +75,13 @@ export default function TipoEquipo() {
     setLoading(true);
     setTimeout(() => {
       setLoading(false);
-      if(e.target.classList[0]== 'fa-solid'){
+      if (e.target.classList[0] == 'fa-solid') {
         const id = e.target.parentNode.getAttribute('data')
         const estadoFilter = estados.filter(est => est._id == id)[0];
         setEstado({
           ...estadoFilter
         });
-      }else{
+      } else {
         const id = e.target.getAttribute('data');
         const estadoFilter = estados.filter(est => est._id == id)[0];
         setEstado({
@@ -92,24 +93,24 @@ export default function TipoEquipo() {
 
   const editarEstado = () => {
     editaInventarioPorId(estado)
-    .then(r => {
-      r.data.estado = r.data.estado === 'true'
-      const id = r.data._id;
-      changeError(false)
-      setLoading(false);
-      getEstados()
-    }).catch(e => {
-      console.log(e);
-      changeError(true);
-      setLoading(false);
-    })
+      .then(r => {
+        r.data.estado = r.data.estado === 'true'
+        const id = r.data._id;
+        changeError(false)
+        setLoading(false);
+        getEstados()
+      }).catch(e => {
+        console.log(e);
+        changeError(true);
+        setLoading(false);
+      })
   }
 
   const resetEstado = () => {
     setEstado({
       _id: '',
       usuarios: '',
-      email:'',
+      email: '',
       estado: true
     })
   }
@@ -117,21 +118,19 @@ export default function TipoEquipo() {
   return (
     <div className='container'>
       <br></br>
-      <button 
-        type="button" 
-        className="btn btn-outline-primary"
-        data-bs-toggle="modal" 
-        data-bs-target="#exampleModal"
+      <NavLink
+        className="nav-item nav-link rounded-circle btn btn-primary text-white position-absolute h2 p4"
+        style={{width:"40px", height:"40px", display:"flex", alignItems:"center", justifyContent:"center"}}
+        to='/agregarinventario'
       >
         <i className="fa-solid fa-plus"></i>
-        Agregar
-      </button>
+      </NavLink>
       <br></br>
-      <TablaInventario 
+      <TablaInventario
         componentes={estados}
         openEditById={openEditById}
       />
-      <ModalDos 
+      <ModalDos
         estado={estado}
         loading={loading}
         closeModal={closeModal}
