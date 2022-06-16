@@ -35,6 +35,12 @@ export default function BarraNav() {
                 >
                    Inventario
                 </NavLink>
+                <NavLink 
+                    className="nav-item nav-link"
+                    to='/usuarios'
+                >
+                   Usuarios
+                </NavLink>
                 
             </ul>
             </div>
